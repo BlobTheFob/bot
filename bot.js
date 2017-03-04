@@ -12,6 +12,7 @@ flexbot.dbotsapi  = config.dbotsapi;
 flexbot.carbonkey = config.carbonkey;
 flexbot.gapikey   = config.gapikey;
 flexbot.steamapi  = config.steamapi;
+flexbot.nasaapi   = config.nasaapi;
 
 Object.defineProperty(Eris.Message.prototype, "guild", {
     get: function() { return this.channel.guild; }

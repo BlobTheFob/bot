@@ -2,7 +2,7 @@ var flexbot = global.flexbot
 var request = require("request");
 
 flexbot.addCommand("apod","get the astronaumical picture of the day.",function(msg,args){
-	request.get("https://api.nasa.gov/planetary/apod?api_key=bZm8t6j7Tr6nw9bJJxbpXDVkH2v2GRsOsOnvzOOk",function(e,res,body){
+	request.get("https://api.nasa.gov/planetary/apod?api_key="+flexbot.nasaapi,function(e,res,body){
     		if(!e && res.statusCode == 200){
        			let data = JSON.parse(body);
 
