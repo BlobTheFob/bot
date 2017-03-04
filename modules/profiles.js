@@ -7,7 +7,7 @@ let udata = flexbot.userdata;
 let updateData = function(msg){
 	if(msg.author.bot) return;
 
-	let ud = udata[msg.author.id] ? udata[msg.author.id] : {credits:0,xp:0,totalxp:0,level:1,color:"0xFFFFFF"};
+	let ud = udata[msg.author.id] ? udata[msg.author.id] : {credits:0,xp:0,totalxp:0,level:1,color:"0xFFFFFF",lastdaily:0,lvlnotif:false};
 
 	let rand = Math.floor(Math.random()*15)+1;
 
@@ -18,6 +18,13 @@ let updateData = function(msg){
 	if(ud.xp >= ud.level*128){
 		ud.xp = ud.xp - ud.level*128;
 		ud.level++;
+		
+		if(ud.lvlnotif === true){
+			flexbot.bot.getDMChannel(msg.author.id)
+			.then(c=>{
+				c.createMessage(emoji.get("star")+" You are now **level "+ud.level+"**");
+			});
+		}
 	}
 
 	udata[msg.author.id] = ud;
@@ -42,7 +49,7 @@ flexbot.addCommand("profile","See your level and credits", async function(msg,ar
 		u = await flexbot.lookupUser(msg,args);
 	}
 
-	let ud = udata[u.id] ? udata[u.id] : {credits:0,xp:0,totalxp:0,level:1,color:"0xFFFFFF"};
+	let ud = udata[u.id] ? udata[u.id] : {credits:0,xp:0,totalxp:0,level:1,color:"0xFFFFFF",lastdaily:0,lvlnotif:false};
 
 	ud.color = ud.color ? ud.color : "0xFFFFFF";
 	udata[u.id].color = ud.color ? ud.color : "0xFFFFFF";
@@ -118,7 +125,44 @@ flexbot.addCommand("transfer","Send credits to someone",function(msg,args){
 	}
 });
 
-flexbot.addCommand("ptop","Displays top 10 users.",async function(msg,args){
+flexbot.addCommand("daily","Get your daily credits",function(msg,args){
+	let timestamp = new Date().getTime();
+	let u = udata[msg.author.id];
+	u.lastdaily = u.lastdaily ? u.lastdaily : 0;
+	
+	if(timestamp >= u.lastdaily){
+		let amt = 200+Math.floor(Math.random()*100);
+		msg.channel.createMessage("**"+msg.author.username+"#"+msg.author.discriminator+"** got **"+emoji.get("money_with_wings")+amt+"** daily credits.");
+	
+		udata[msg.author.id].credits = udata[msg.author.id].credits + amt;
+		
+		u.lastdaily = timestamp+86400000;
+		udata[msg.author.id].lastdaily = u.lastdaily;
+	}else{
+		let now = new Date();
+		let next = new Date(u.lastdaily);
+		
+		let diff = next-now;
+		
+		let s = diff/1000
+		let h = parseInt(s/3600)
+		s=s%3600
+		let m = parseInt(s/60)
+		s=s%60
+		s=parseInt(s)
+
+		let tstr = (h < 10 ? "0"+h : h)+"h, "+(m < 10 ? "0"+m : m)+"m, "+(s < 10 ? "0"+s : s)+"s";
+		
+		msg.channel.createMessage(msg.author.mention+", your daily resets in **"+tstr+"**.");
+	}
+});
+
+flexbot.addCommand("levelnotif","Toggles level up notifs.",function(msg,args){
+	udata[msg.author.id].lvlnotif = !udata[msg.author.id].lvlnotif;
+	msg.channel.createMessage("Level up notifications is now set to `"+udata[msg.author.id].lvlnotif+"`");
+});
+
+/*flexbot.addCommand("ptop","Displays top 10 users.",async function(msg,args){
 	msg.channel.createMessage("Please wait while data is being retrieved.")
 	.then((m)=>{
 	let stype = "levels";
@@ -169,4 +213,4 @@ flexbot.addCommand("ptop","Displays top 10 users.",async function(msg,args){
 			color:stype == "credits" ? 0x00FF00 : 0xFFFF00
 		}});
 	});
-});
+});*/

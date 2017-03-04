@@ -25,7 +25,7 @@ flexbot.addCommand("needsmorejpeg","Compress an image with JPEG",function(msg,ar
 },["nmjpeg"]);
 
 let mirror = function(msg,url,type){
-	if(type == "haah"){ //haah
+	if(type == "waaw"){
 		jimp.read(url)
 		.then(im=>{
 			let a = im.clone();
@@ -41,10 +41,10 @@ let mirror = function(msg,url,type){
 			});
 
 			out.getBuffer(jimp.MIME_PNG,(e,f)=>{
-				msg.channel.createMessage("",{name:"haah.png",file:f});
+				msg.channel.createMessage("",{name:"waaw.png",file:f});
 			});
 		});
-	}else if(type == "waaw"){ //waaw
+	}else if(type == "haah"){
 		jimp.read(url)
 		.then(im=>{
 			let a = im.clone();
@@ -60,10 +60,10 @@ let mirror = function(msg,url,type){
 			});
 
 			out.getBuffer(jimp.MIME_PNG,(e,f)=>{
-				msg.channel.createMessage("",{name:"waaw.png",file:f});
+				msg.channel.createMessage("",{name:"haah.png",file:f});
 			});
 		});
-	}else if(type == "woow"){ //woow
+	}else if(type == "woow"){
 		jimp.read(url)
 		.then(im=>{
 			let a = im.clone();
@@ -82,7 +82,7 @@ let mirror = function(msg,url,type){
 				msg.channel.createMessage("",{name:"woow.png",file:f});
 			});
 		});
-	}else if(type == "hooh"){ //hooh
+	}else if(type == "hooh"){
 		jimp.read(url)
 		.then(im=>{
 			let a = im.clone();

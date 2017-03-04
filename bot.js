@@ -6,9 +6,12 @@ const flexbot = global.flexbot
 flexbot.bot = new Eris(config.token);
 flexbot.prefix = "f!";
 flexbot.oid = config.ownerid;
-flexbot.dbotsapi = config.dbotsapi;
+
+//Keys
+flexbot.dbotsapi  = config.dbotsapi;
 flexbot.carbonkey = config.carbonkey;
-flexbot.gapikey = config.gapikey;
+flexbot.gapikey   = config.gapikey;
+flexbot.steamapi  = config.steamapi;
 
 Object.defineProperty(Eris.Message.prototype, "guild", {
     get: function() { return this.channel.guild; }
@@ -41,7 +44,7 @@ function isOwner(msg){
 
 flexbot.isOwner = isOwner;
 
-var logid = "246322719044403201"
+var logid = "280734761457025024"
 flexbot.logid = logid;
 
 function logCommand(cmd,msg,args){
@@ -166,7 +169,7 @@ var cmds = {
 				try{
 					output = eval(args);
 				}catch(e){
-					output = e;
+					output = e.stack;
 					errored = true;
 					col = 0xC00000;
 				}
@@ -396,9 +399,27 @@ for(f of files){
 	console.log("Loaded Module: "+f)
 };
 
-var prefix = flexbot.prefix;
 bot.on("messageCreate",(msg) => {
 	if(!msg.author.bot){
+		let prefix = flexbot.prefix;
+		
+		if(msg.channel.guild && msg.channel.guild.id == "242110559212929045"){
+			const START = /^\/\/ ?|^[{[~-] ?/g;
+			const END = / ?[\]}~-]$/g;
+			
+			const x = [];
+			for (let c of [msg.content, msg.cleanContent]) {
+				if (START.test(c)) { 
+					c = c.replace(START, '');
+					if (END.test(c)) {
+						c = c.replace(END, '');
+					}
+				}
+				x.push(c.trim());
+			} 
+			[msg.content, msg.cleanContent] = x;
+		}
+	
 		var prefix2 = flexbot.bot.user.mention;
 		var c = msg.content.split(" ")
 		var args = c.splice((msg.content.substring(0,prefix2.length) == prefix2 ? 2 : 1),c.length).join(" ")

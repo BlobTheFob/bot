@@ -4,7 +4,7 @@ var emoji = require("node-emoji")
 flexbot.addCommand("suggestion","Leave a suggestion",function(msg,args){
 	if(!args){msg.channel.createMessage("Please add a message.")}else{
 	msg.channel.createMessage("Suggestion submitted, expect a reply back.")
-	flexbot.bot.createMessage("240844206262845441",{
+	flexbot.bot.createMessage("280734727240024064",{
 		embed:{
 			author:{
 				name:"Suggestion by: "+msg.author.username+"#"+msg.author.discriminator,
@@ -23,8 +23,9 @@ flexbot.addCommand("suggestion","Leave a suggestion",function(msg,args){
 },["suggest","idea"])
 
 flexbot.addCommand("complaint","Leave a complaint",function(msg,args){
+	if(!args){msg.channel.createMessage("Please add a message.")}else{
 	msg.channel.createMessage("Left complaint.")
-	flexbot.bot.createMessage("240844206262845441",{
+	flexbot.bot.createMessage("284349667586867200",{
 		embed:{
 			author:{
 				name:"Complaint by: "+msg.author.username+"#"+msg.author.discriminator,
@@ -39,10 +40,11 @@ flexbot.addCommand("complaint","Leave a complaint",function(msg,args){
 			timestamp:new Date()
 		}
 	});
+	}
 },["complain"])
 
-flexbot.addCommand("sreply","[Bot Owner] Reply to a suggestion.",function(msg,args){
-	let a = args.split(",");
+flexbot.addCommand("sreply","[Whitelist] Reply to a suggestion.",function(msg,args){
+	let a = args.split("|");
 	if(flexbot.isOwner(msg)){
 		let cid    = a[0];
 		let uid    = a[1];
@@ -50,7 +52,7 @@ flexbot.addCommand("sreply","[Bot Owner] Reply to a suggestion.",function(msg,ar
 		let res    = a.splice(3,a.length).join(",");
 
 		if(!cid || !uid || !status || !res || !status == "accepted" || !status == "rejected"){
-			msg.channel.createMessage("One or more arguments missing. Format: `channelid,userid,[accepted,rejected],message`")
+			msg.channel.createMessage("One or more arguments missing. Format: `channelid|userid|[accepted,rejected]|message`")
 		}else{
 			let c = flexbot.bot.getChannel(cid);
 			let u = flexbot.bot.users.get(uid);

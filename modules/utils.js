@@ -680,3 +680,20 @@ flexbot.addCommand("yt","Look up a YouTube video.",function(msg,args){
 		});
 	}
 });
+
+flexbot.addCommand("discrim","Find users with a certain discrim",function(msg,args){
+	if(/[0-9]{4}/.test(args)){
+		let discrim = args.match(/[0-9]{4}/)[0];
+		let pool = [];
+	
+		flexbot.bot.users.forEach(u=>{
+			if(u.discriminator == discrim){
+				pool.push(u.username);
+			}
+		});
+		
+		msg.channel.createMessage("__Found **"+pool.length+"** users with discrim **"+discrim+"**__\n"+pool.join(","));
+	}else{
+		msg.channel.createMessage("Must be in 4 digit format.");
+	}
+});

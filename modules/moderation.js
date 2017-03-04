@@ -12,28 +12,28 @@ flexbot.addCommand("kick","Kick a user",function(msg,args){
 				msg.guild.kickMember(u.id);
 			});
 		}else{
-			msg.channel.createMessage("I do not have Kick Members permission.")
+			msg.channel.createMessage("I do not have Kick Members permission.");
 		}
 	}else{
-		msg.channel.createMessage(emoji.get(":no_entry_sign:")+" Lacking permissions, need Kick Members.")
+		msg.channel.createMessage(emoji.get(":no_entry_sign:")+" Lacking permissions, need Kick Members.");
 	}
 });
 
-flexbot.addCommand("ban","Ban a user",function(msg,args){
+flexbot.addCommand("ban","Ban a user (can also hackban)",function(msg,args){
 	if(msg.channel.permissionsOf(msg.author.id).has("banMembers")){
 		if(msg.channel.permissionsOf(flexbot.bot.user.id).has("banMembers")){
 			if(!args) { msg.channel.createMessage("Specify a user!"); return}
 
 			flexbot.lookupUser(msg,args)
 			.then(u=>{
-				msg.channel.createMessage(emoji.get("hammer")+" **"+u.username+"#"+u.discriminator+"** has been banned by **"+msg.author.username+"#"+msg.author.discriminator+"**.")
-				msg.guild.banMember(u.id);
+				msg.channel.createMessage(emoji.get("hammer")+" **"+u.username+"#"+u.discriminator+"** has been banned by **"+msg.author.username+"#"+msg.author.discriminator+"**.");
+				msg.guild.banMember(u.id,7);
 			});
 		}else{
-			msg.channel.createMessage("I do not have Ban Members permission.")
+			msg.channel.createMessage("I do not have Ban Members permission.");
 		}
 	}else{
-		msg.channel.createMessage(emoji.get(":no_entry_sign:")+" Lacking permissions, need Ban Members.")
+		msg.channel.createMessage(emoji.get(":no_entry_sign:")+" Lacking permissions, need Ban Members.");
 	}
 });
 
@@ -44,17 +44,17 @@ flexbot.addCommand("softban","Softban a user",function(msg,args){
 
 			flexbot.lookupUser(msg,args)
 			.then(u=>{
-				msg.channel.createMessage(emoji.get("hammer")+" **"+u.username+"#"+u.discriminator+"** has been softbanned by **"+msg.author.username+"#"+msg.author.discriminator+"**.")
+				msg.channel.createMessage(emoji.get("hammer")+" **"+u.username+"#"+u.discriminator+"** has been softbanned by **"+msg.author.username+"#"+msg.author.discriminator+"**.");
 				msg.guild.banMember(u.id);
 				setTimeout(()=>{
-					msg.guild.unbanMember(u.id);
+					msg.guild.unbanMember(u.id,7);
 				},2000);
 			});
 		}else{
-			msg.channel.createMessage("I do not have Ban Members permission.")
+			msg.channel.createMessage("I do not have Ban Members permission.");
 		}
 	}else{
-		msg.channel.createMessage(emoji.get(":no_entry_sign:")+" Lacking permissions, need Ban Members.")
+		msg.channel.createMessage(emoji.get(":no_entry_sign:")+" Lacking permissions, need Ban Members.");
 	}
 });
 
@@ -66,13 +66,13 @@ flexbot.addCommand("unban","Unban a user",function(msg,args){
 
 			flexbot.lookupUser(msg,args)
 			.then(u=>{
-				msg.channel.createMessage(emoji.get("white_check_mark")+" **"+u.username+"#"+u.discriminator+"** has been unbanned by **"+msg.author.username+"#"+msg.author.discriminator+"**.")
+				msg.channel.createMessage(emoji.get("white_check_mark")+" **"+u.username+"#"+u.discriminator+"** has been unbanned by **"+msg.author.username+"#"+msg.author.discriminator+"**.");
 				msg.guild.unbanMember(u.id);
 			});
 		}else{
-			msg.channel.createMessage("I do not have Ban Members permission.")
+			msg.channel.createMessage("I do not have Ban Members permission.");
 		}
 	}else{
-		msg.channel.createMessage(emoji.get(":no_entry_sign:")+" Lacking permissions, need Ban Members.")
+		msg.channel.createMessage(emoji.get(":no_entry_sign:")+" Lacking permissions, need Ban Members.");
 	}
 });

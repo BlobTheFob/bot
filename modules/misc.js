@@ -1,6 +1,7 @@
 var flexbot = global.flexbot
 var emoji = require("node-emoji")
 var request = require('request')
+var fs = require("fs")
 
 flexbot.addCommand("echo","Echo, echo, echo",function(msg,args){
 	msg.channel.createMessage("\u200b"+args)
@@ -20,14 +21,7 @@ flexbot.addCommand("avatar","Get an avatar of someone",function(msg,args){
 	flexbot.lookupUser(msg,args ? args : msg.author.mention)
 	.then(u=>{
 		let av = "https://cdn.discordapp.com/avatars/"+u.id+"/"+u.avatar+"."+(u.avatar.startsWith("a_") ? "gif" : "png")+"?size=1024";
-		msg.channel.createMessage({
-			content:"Avatar for **"+u.username+"#"+u.discriminator+"**:",
-			embed:{
-				image:{
-					url:av
-				}
-			}
-		})
+		msg.channel.createMessage("Avatar for **"+u.username+"#"+u.discriminator+"**:\n"+av)
 	})
 },[],"[user]")
 
@@ -368,4 +362,35 @@ flexbot.addCommand("braixen","Gets a random image of Braixen",function(msg,args)
 
 flexbot.addCommand("brianna","owo",function(msg,args){
 	msg.channel.createMessage("is cute. "+emoji.get("yellow_heart"))
+});
+
+flexbot.addCommand("hug","Give someone a hug.",function(msg,args){
+	flexbot.lookupUser(msg,args)
+	.then(u=>{
+		msg.channel.createMessage("**"+msg.author.username+"** gave **"+u.username+"** a nice warm hug.")
+	});
+});
+
+flexbot.addCommand("pat","Give someone a pat on the head.",function(msg,args){
+	let pats = fs.readdirSync(__dirname+"/../img/pats/pats");
+	let img = pats[Math.floor(Math.random()*pats.length)];
+
+	flexbot.lookupUser(msg,args)
+	.then(u=>{
+		msg.channel.createMessage("**"+msg.author.username+"** gave **"+u.username+"** a gentle and lovely pat on the head.",{file:fs.readFileSync(__dirname+"/../img/pats/pats/"+img),name:img});
+	});
+});
+
+flexbot.addCommand("cuddle","Cuddle with someone.",function(msg,args){
+	flexbot.lookupUser(msg,args)
+	.then(u=>{
+		msg.channel.createMessage("**"+msg.author.username+"** cuddles up with **"+u.username+"** cutely.")
+	});
+});
+
+flexbot.addCommand("poke","Poke someone.",function(msg,args){
+	flexbot.lookupUser(msg,args)
+	.then(u=>{
+		msg.channel.createMessage("**"+msg.author.username+"** gently pokes **"+u.username+"**.")
+	});
 });

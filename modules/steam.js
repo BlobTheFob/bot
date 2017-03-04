@@ -2,7 +2,7 @@ var flexbot = global.flexbot
 var emoji = require("node-emoji")
 
 var steam = {
-	key:"45A277C175FB5267A80617957670BB2D",
+	key:flexbot.steamapi,
 	url:"https://api.steampowered.com/",
 	sidbase:0x0110000100000000
 }
