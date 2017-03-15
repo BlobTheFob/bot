@@ -13,6 +13,7 @@ flexbot.carbonkey = config.carbonkey;
 flexbot.gapikey   = config.gapikey;
 flexbot.steamapi  = config.steamapi;
 flexbot.nasaapi   = config.nasaapi;
+flexbot.dboapi    = config.dboapi;
 
 Object.defineProperty(Eris.Message.prototype, "guild", {
     get: function() { return this.channel.guild; }
@@ -31,6 +32,7 @@ bot.on("ready", () => {
 
 	request.post("https://bots.discord.pw/api/bots/"+bot.user.id+"/stats",{headers:{"Authorization":config.dbotsapi},json:{server_count:bot.guilds.size}});
 	request.post("https://www.carbonitex.net/discord/data/botdata.php",{headers:{"Content-Type":"application/json"},json:{key:config.carbonkey,servercount:bot.guilds.size}});
+	request.post("https://discordbots.org/api/bots/"+bot.user.id+"/stats",{headers:{"Authorization":config.dboapi,"Content-Type":"application/json"},json:{server_count:bot.guilds.size}});
 
 	bot.getDMChannel(config.ownerid)
 		.then((c)=>{
@@ -90,10 +92,10 @@ function logError(cmd,msg,args,error){
 		],
 		footer:{
 			text:"Time",
-			icon_url:"https://flexbox.xyz/discord/twemoji/36x36/1f552.png"
+			icon_url:"https://assets.xn--6s8h.cf/discord/twemoji/36x36/1f552.png"
 		},
 		thumbnail:{
-			url:msg.channel.guild ? "https://cdn.discordapp.com/icons/"+msg.channel.guild.id+"/"+msg.channel.guild.icon+".jpg" : "https://flexbox.xyz/discord/twemoji/72x72/1f5e8.png"
+			url:msg.channel.guild ? "https://cdn.discordapp.com/icons/"+msg.channel.guild.id+"/"+msg.channel.guild.icon+".jpg" : "https://assets.xn--6s8h.cf/discord/twemoji/72x72/1f5e8.png"
 		},
 		timestamp:new Date()
 	}})

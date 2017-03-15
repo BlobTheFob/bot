@@ -133,19 +133,6 @@ flexbot.addCommand("clean","Cleans bot messages",function(msg,args){
 	})
 })
 
-flexbot.addCommand("uptime","Contest of \"how long can we go without a restart\"",function(msg,args){
-	var uptime = flexbot.bot.uptime
-	var s = uptime/1000
-	var h = parseInt(s/3600)
-	s=s%3600
-	var m = parseInt(s/60)
-	s=s%60
-	s=parseInt(s)
-
-	var tstr = (h < 10 ? "0"+h : h)+":"+(m < 10 ? "0"+m : m)+":"+(s < 10 ? "0"+s : s)
-	msg.channel.createMessage(emoji.get(":clock3:")+"**Uptime**: "+tstr)
-})
-
 flexbot.addCommand("emoji","Get an image of an emoji/custom emote.",async function(msg,args){
 	if(/[0-9]{17,21}/.test(args)){
 		let eid = args.match(/[0-9]{17,21}/)
@@ -166,7 +153,7 @@ flexbot.addCommand("emoji","Get an image of an emoji/custom emote.",async functi
 	}else{
 			let twemoji = require("twemoji");
 			let ehex = twemoji.convert.toCodePoint(args);
-			let baseurl = "https://flexbox.xyz/discord/twemoji";
+			let baseurl = "https://assets.xn--6s8h.cf/discord/twemoji";
 
 			msg.channel.createMessage({embed:{
 				title:"Emoji Info",

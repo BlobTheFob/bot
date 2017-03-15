@@ -4,7 +4,7 @@ flexbot.sconfig = flexbot.sconfig ? flexbot.sconfig : require(__dirname+"/../dat
 
 let sconfig = flexbot.sconfig;
 
-let validSettings = ["greetings","greetMsg","greetChan","farewells","leaveMsg","leaveChan"];
+let validSettings = ["greetings","greetMsg","greetChan","farewells","leaveMsg","leaveChan","imgProfiles"];
 
 flexbot.addCommand("config","[Manage Server] Configuration command bot settings",function(msg,args){
 	if(msg.channel.permissionsOf(msg.author.id).has("manageGuild") || flexbot.isOwner(msg)){

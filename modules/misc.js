@@ -49,16 +49,6 @@ flexbot.addCommand("roll","Roll dice",function(msg,args){
 },["dice"])
 
 flexbot.addCommand("info","It's like a business card in a message",function(msg,args){
-	let uptime = flexbot.bot.uptime
-	let s = uptime/1000
-	let h = parseInt(s/3600)
-	s=s%3600
-	let m = parseInt(s/60)
-	s=s%60
-	s=parseInt(s)
-
-	let tstr = (h < 10 ? "0"+h : h)+":"+(m < 10 ? "0"+m : m)+":"+(s < 10 ? "0"+s : s)
-
 	msg.channel.createMessage({embed:{
 		color:0xEB0763,
 		title:"FlexBot v8",
@@ -70,8 +60,7 @@ flexbot.addCommand("info","It's like a business card in a message",function(msg,
 		fields:[
 			{name:"Language",value:"Javascript",inline:true},
 			{name:"Library",value:"Eris",inline:true},
-			{name:"Current Uptime",value:tstr,inline:true},
-			{name:"Servers",value:flexbot.bot.guilds.size,inline:true},
+				{name:"Servers",value:flexbot.bot.guilds.size,inline:true},
 			{name:"Current Persona",value:"Akane the Fox",inline:true},
 			{name:"Contributors",value:"**KaosHeaven#1812** - Hosting, commands"},
 			{name:"Links",value:"[GitHub](https://github.com/LUModder/FlexBot) | [Invite](https://discordapp.com/oauth2/authorize?client_id=173441062243663872&scope=bot) | [Server](https://discord.gg/ZcXh4ek) | [Donate](https://paypal.me/boxofflex)\n(If you donate message me)"}
@@ -82,18 +71,31 @@ flexbot.addCommand("info","It's like a business card in a message",function(msg,
 flexbot.addCommand("stats","Oooh, numbers",function(msg,args){
 	let uptime = flexbot.bot.uptime
 	let s = uptime/1000
+	let d = parseInt(s/86400)
+	s=s%86400
 	let h = parseInt(s/3600)
 	s=s%3600
 	let m = parseInt(s/60)
 	s=s%60
 	s=parseInt(s)
 
-	let tstr = (h < 10 ? "0"+h : h)+":"+(m < 10 ? "0"+m : m)+":"+(s < 10 ? "0"+s : s)
+	let tstr = (d < 10 ? "0"+d : d)+":"+(h < 10 ? "0"+h : h)+":"+(m < 10 ? "0"+m : m)+":"+(s < 10 ? "0"+s : s)
 
 	let cmdcount = 0
 	for(c in flexbot.cmds){cmdcount++}
 
-	msg.channel.createMessage("```ini\n; FlexBot Stats\nservers = "+flexbot.bot.guilds.size+"\ncommands = "+cmdcount+"\nusers = "+flexbot.bot.users.size+"\n[Uptime: "+tstr+"]\n```")
+	msg.channel.createMessage({embed:{
+		title:"FlexBot Stats",
+		fields:[
+			{name:"Servers",value:flexbot.bot.guilds.size,inline:true},
+			{name:"Commands",value:cmdcount,inline:true},
+			{name:"Users Seen",value:flexbot.bot.users.size,inline:true},
+			{name:"Uptime",value:tstr,inline:true}
+		],
+		color:0x3498DB
+	}});
+	
+	//"```ini\n; FlexBot Stats\nservers = "+flexbot.bot.guilds.size+"\ncommands = "+cmdcount+"\nusers = "+flexbot.bot.users.size+"\n[Uptime: "+tstr+"]\n```"
 })
 
 flexbot.addCommand("invite","Invite FlexBot to your server!",function(msg,args){

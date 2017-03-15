@@ -1,5 +1,7 @@
 var flexbot = global.flexbot;
 var emoji = require("node-emoji");
+let Jimp = require("jimp");
+
 flexbot.userdata = flexbot.userdata ? flexbot.userdata : require(__dirname+"/../data/udata.json");
 
 let udata = flexbot.userdata;
@@ -54,11 +56,11 @@ flexbot.addCommand("profile","See your level and credits", async function(msg,ar
 	ud.color = ud.color ? ud.color : "0xFFFFFF";
 	udata[u.id].color = ud.color ? ud.color : "0xFFFFFF";
 
-	msg.channel.createMessage({embed:{
+	/*msg.channel.createMessage({embed:{
 		url:"https://discordapp.com/channels/@me/"+u.id,
 		title:"Profile for: "+u.username+"#"+u.discriminator,
 		thumbnail:{
-			url:u.avatarURL
+			url:u.avatarURL.replace("jpg","png")
 		},
 		color:parseInt(ud.color ? ud.color : "0xFFFFFF"),
 		fields:[
@@ -70,7 +72,48 @@ flexbot.addCommand("profile","See your level and credits", async function(msg,ar
 		footer:{
 			text:ud.color == "0xFFFFFF" ? "You can set the side color with f!pcolor." : ""
 		}
-	}});
+	}});*/
+
+	Jimp.read(u.avatarURL.replace("jpg","png").replace("gif","png").replace("a_",""))
+	.then(i=>{
+		let av = i.clone();
+		av.resize(72,72);
+
+		let box1 = new Jimp(80,80,parseInt(ud.color+"FF"));
+		let box2 = new Jimp(72,72,0x00000088);
+		
+		let img = new Jimp(256,80,0x1A1D23FF);
+		
+		Jimp.read("https://assets.xn--6s8h.cf/discord/twemoji/72x72/2b50.png")
+		.then(i2=>{
+			let star = i2.clone();
+			star.resize(16,16);
+			Jimp.read("https://assets.xn--6s8h.cf/discord/twemoji/72x72/1f4b8.png")
+			.then(i3=>{
+				let cash = i3.clone();
+				cash.resize(16,16);
+				Jimp.loadFont(__dirname+"/../assets/04b03_16.fnt")
+				.then(font=>{
+					img.composite(box1,0,0);
+					img.composite(box2,4,4);
+					img.composite(av,4,4);
+					img.print(font, 84, 4, u.username+"#"+u.discriminator);
+					
+					img.composite(star,84,22);
+					img.print(font,102,22,"Level "+ud.level);
+					
+					img.composite(cash,84,40);
+					img.print(font,102,40,""+ud.credits);
+					
+					img.print(font,84,58,"XP: "+ud.xp+"/"+(ud.level*128));
+					
+					img.getBuffer(Jimp.MIME_PNG,(e,f)=>{
+						msg.channel.createMessage("",{name:"profile.png",file:f});
+					});
+				});
+			});
+		});
+	});
 });
 
 flexbot.addCommand("pcolor","Set your profile color",function(msg,args){
