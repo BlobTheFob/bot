@@ -650,24 +650,6 @@ flexbot.addCommand("raffle","Choose a random user",function(msg,args){
 	msg.channel.createMessage("I choose **"+u.username+"#"+u.discriminator+"**"+(u.nick ? " ("+u.nick+")" : ""))
 });
 
-flexbot.addCommand("yt","Look up a YouTube video.",function(msg,args){
-	if(!args){
-		msg.channel.createMessage("Arguments are required!");
-	}else{
-		request.get("https://www.googleapis.com/youtube/v3/search?key="+flexbot.gapikey+"&maxResults=3&part=snippet&type=video&q="+encodeURIComponent(args),(err,res,body)=>{
-		if(!err && res.statusCode == 200){
-			let data = JSON.parse(body).items;
-			
-			msg.channel.createMessage({embed:{
-				title:"Results for **"+args+"**",
-				color:0xcd201f,
-				description:"["+data[0].snippet.title+"](https://youtu.be/"+data[0].id.videoId+")\n**Uploaded by:** "+data[0].snippet.channelTitle+"\n```\n"+data[0].snippet.description+"\n```\n\n["+data[1].snippet.title+"](https://youtu.be/"+data[1].id.videoId+")\n**Uploaded by:** "+data[1].snippet.channelTitle+"\n```\n"+data[1].snippet.description+"\n```\n\n["+data[2].snippet.title+"](https://youtu.be/"+data[2].id.videoId+")\n**Uploaded by:** "+data[2].snippet.channelTitle+"\n```\n"+data[2].snippet.description+"\n```"
-				}});
-			}
-		});
-	}
-});
-
 flexbot.addCommand("discrim","Find users with a certain discrim",function(msg,args){
 	if(/[0-9]{4}/.test(args)){
 		let discrim = args.match(/[0-9]{4}/)[0];

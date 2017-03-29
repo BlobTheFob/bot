@@ -494,6 +494,15 @@ bot.on("guildCreate",function(s){
 
 	request.post("https://bots.discord.pw/api/bots/"+bot.user.id+"/stats",{headers:{"Authorization":config.dbotsapi},json:{server_count:bot.guilds.size}});
 	request.post("https://www.carbonitex.net/discord/data/botdata.php",{headers:{"Content-Type":"application/json"},json:{key:config.carbonkey,servercount:bot.guilds.size}});
+	
+	if(Math.floor((bots/s.memberCount)*100) >= 80){
+		bot.createMessage(logid,emoji.get("warning")+" Bot Collection Detected! (Over 80% threshold)");
+		bot.getDMChannel(config.ownerid)
+		.then((c)=>{
+			bot.createMessage(c.id,emoji.get("warning")+" Left bot collection: **"+s.name+"** `"+s.id+"`")
+		})
+		s.leave();
+	}
 })
 
 bot.on("guildDelete",s=>{
